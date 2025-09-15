@@ -171,3 +171,4 @@ class TaskExportExcelView(LoginRequiredMixin,View):
         resp["Content-Disposition"]='attachment; filename="tasks.xlsx"'
         wb.save(resp)
         return resp
+

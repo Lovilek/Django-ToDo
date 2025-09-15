@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>404 — Страница не найдена</title>
+  <style>
+    :root{
+      --bg-0:#0d0617;
+      --bg-1:#150c25;
+      --bg-2:#1d0f33;
+      --violet-300:#b18cff;
+      --violet-400:#a269ff;
+      --violet-500:#8b5cf6;
+      --violet-600:#7c3aed;
+      --violet-700:#6332c7;
+      --fuchsia-500:#d946ef;
+      --pink-400:#f472b6;
+      --text-0:#e9e4ff;
+      --muted:#9a8bc0;
+      --border:#3b2464;
+      --shadow: 0 20px 60px rgba(112, 26, 255, .25);
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;margin:0;}
+    body{
+      font:16px/1.6 ui-sans-serif,system-ui;
+      color:var(--text-0);
+      background: radial-gradient(1200px 900px at 20% 10%, var(--bg-2), transparent 60%),
+                  radial-gradient(900px 700px at 80% 20%, #2a0a5a, transparent 60%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-0));
+      display:grid;place-items:center;
+    }
+    .card{
+      background: linear-gradient(180deg,#1a0b2fcc,#0f0822cc);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:40px;
+      max-width:600px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+    .title{
+      font-size:clamp(64px,12vw,140px);
+      font-weight:800;
+      margin:0 0 20px;
+      background: conic-gradient(from 220deg,#fff,var(--violet-300),var(--violet-600),var(--fuchsia-500),#fff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin:0 0 30px;
+      font-size:1.1rem;
+    }
+    .btn{
+      display:inline-block;
+      margin:0 10px;
+      padding:12px 22px;
+      border-radius:10px;
+      font-weight:600;
+      text-decoration:none;
+      transition:.3s;
+    }
+    .btn-primary{
+      background:var(--violet-600);
+      color:#fff;
+    }
+    .btn-primary:hover{background:var(--violet-500);}
+    .btn-ghost{
+      background:transparent;
+      color:var(--violet-400);
+      border:1px solid var(--violet-600);
+    }
+    .btn-ghost:hover{background:var(--violet-700);color:#fff;}
+    footer{
+      margin-top:30px;
+      font-size:.85rem;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1 class="title">403</h1>
+    <p class="subtitle">Ой!</p>
+    <a class="btn btn-primary" href="/">На главную</a>
+    <a class="btn btn-ghost" href="javascript:history.back()">Назад</a>
+    <footer>© <span id="year"></span> Ваш сайт</footer>
+  </main>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
