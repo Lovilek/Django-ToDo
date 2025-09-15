@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}My Tasks{% endblock %}
+
+{% block content %}
+<h2>My Tasks</h2>
+
+<form method="get" class="inline-form">
+  <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Enter a word">
+  <label>
+    Status
+    <select name="status">
+      <option value="">All</option>
+      <option value="new" {% if request.GET.status == 'new' %} selected {% endif %}>New</option>
+      <option value="in_progress" {% if request.GET.status == 'in_progress' %} selected {% endif %}>In progress</option>
+      <option value="done" {% if request.GET.status == 'done' %} selected {% endif %}>Done</option>
+    </select>
+  </label>
+    <label>
+    Priority
+    <select name="priority">
+      <option value="">All</option>
+      <option value="1" {% if request.GET.status == '1' %} selected {% endif %}>Low</option>
+      <option value="2" {% if request.GET.status == '2' %} selected {% endif %}>Normal</option>
+      <option value="3" {% if request.GET.status == '3' %} selected {% endif %}>High</option>
+    </select>
+  </label>
+
+  <button type="submit" class="btn btn-sm">Find</button>
+  <a href="{% url 'tasks:list' %}" class="btn btn-sm btn-secondary">Reset</a>
+</form>
+
+<div class="btn-group">
+  <a href="{% url 'tasks:create' %}" class="btn btn-success">Create Task</a>
+  <a href="{% url 'tasks:export' %}?{{request.GET.urlencode}}" class="btn btn-success">Export</a>
+</div>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th><th>Status</th><th>Priority</th><th>Deadline</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in tasks %}
+    <tr>
+      <td class="table-title"><a href="{% url 'tasks:detail' t.pk %}">{{ t.title }}</a></td>
+      <td>
+        {% if t.status == 'new' %}New{% elif t.status == 'in_progress' %}In Progress{% else %}Done{% endif %}
+      </td>
+      <td>{% if t.priority == 1 %}Low{% elif t.priority == 2 %}Normal{% else %}High{% endif %}</td>
+      <td>
+        {% if t.due_date %}
+          {% if t.is_overdue %}<strong>Overdue: {{ t.due_date|date:"M. j, Y" }}</strong>{% else %}{{ t.due_date|date:"M. j, Y" }}{% endif %}
+        {% else %}-{% endif %}
+      </td>
+      <td class="actions">
+        {% if t.status != 'done' %}
+          <form method="post" action="{% url 'tasks:complete' t.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-xs">Complete</button>
+          </form>
+        {% endif %}
+        <a href="{% url 'tasks:edit' t.pk %}" class="btn btn-xs">Update</a>
+        <a href="{% url 'tasks:delete' t.pk %}" class="btn btn-xs btn-danger">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" style="text-align:center; padding:18px;">No Tasks</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+{% if is_paginated %}
+  <div class="pagination">
+    <span>
+      Page {{ page_obj.number }} of {{ paginator.num_pages }}
+    </span>
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <!-- Левая часть -->
+        <ul class="links">
+            <li><a href="{% url 'home' %}">Home Page</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'tasks:list' %}">My Tasks</a></li>
+            {% endif %}
+        </ul>
+
+        <!-- Правая часть -->
+        <ul class="links">
+            {% if user.is_authenticated %}
+                <li class="user-greet">Hello, {{ user.username }}!</li>
+                <li><a href="{% url 'password_change' %}">Change Password</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}" class="btn btn-sm">Login</a></li>
+                <li><a href="{% url 'tasks:signup' %}" class="btn btn-sm">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</header>
+
+
+<main class="page-container">
+    {% if messages %}
+        <div class="alerts">
+            {% for m in messages %}
+                <div class="alert">{{ m }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>&copy; 2025 Tasks List. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

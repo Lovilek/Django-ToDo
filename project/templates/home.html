@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Home Page - Task List{% endblock %}
+
+{% block content %}
+<div class="home-wrapper">
+  <div class="card home-card">
+    <h2 class="home-title">📋 Tasks List</h2>
+    <p class="home-sub">A simple project on Django with authentication and tasks management</p>
+
+    {% if user.is_authenticated %}
+      <p style="margin-top:18px;">
+        <a href="{% url 'tasks:list' %}" class="btn">View My Tasks</a>
+      </p>
+    {% else %}
+      <p style="margin-top:18px;">
+        <a href="{% url 'tasks:signup' %}" class="btn btn-sm">Sign Up</a>
+        <span style="margin:0 8px; color:#aaa;">or</span>
+        <a href="{% url 'login' %}" class="btn btn-sm btn-secondary">Login</a>
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
